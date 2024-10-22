@@ -1,8 +1,33 @@
-name: Hello World
-'on': push
+name: Terraform Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - feature/9664 # remove after testing
+    paths:
+      - terraform/**
+      - .github/workflows/templates/**
+      - .github/workflows/aws-tf-cli.yaml
+  workflow_dispatch:
+
+env:
+  WORKING_DIR: 'terraform'
+
 jobs:
-hello-job:
-runs-on: ubuntu-latest
-steps:
-  - name: Echo text
-    run: 'echo "Hello, world!"'
+  output_env:
+    runs-on: ubuntu-latest
+    outputs:
+      WORKING_DIR: ${{ steps.output_env.outputs.WORKING_DIR }}
+    steps:
+      - name: Set output for environment variables
+        id: output_env
+        run: |
+          echo "WORKING_DIR=${{ env.WORKING_DIR }}" >> $GITHUB_OUTPUT
+
+  tf_plan_dev:
+    name: Terraform Plan Dev
+    needs: [output_env]
+    uses: ./.github/workflows/terraform-plan-cli.yaml
+    with:
+      WORKING_DIR: ${{ needs.output_env.outputs.WORKING_DIR }}
