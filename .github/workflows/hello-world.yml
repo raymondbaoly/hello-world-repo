@@ -35,6 +35,6 @@ jobs:
   tf_plan_dev:
     name: Terraform Plan Dev
     needs: [output_env]
-    uses: ./.github/workflows/terraform-plan-cli.yaml
+    uses: ./.github/workflows/templates/terraform-plan-cli.yaml
     with:
       WORKING_DIR: ${{ needs.output_env.outputs.WORKING_DIR }}
