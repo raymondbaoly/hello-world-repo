@@ -1,0 +1,35 @@
+name: "Terraform-Plan"
+
+on:
+  workflow_call:
+    inputs:
+      WORKING_DIR:
+        type: string
+        required: true
+        default: 'terraform'
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+  pull-requests: write
+  actions: write
+  
+jobs: 
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Commit SHA
+        id: get-commit-sha
+        run: echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Set output for environment variables
+        id: output_env
+        run: |
+          echo "WORKING_DIR=${{ inputs.WORKING_DIR }}"
+          echo "test!!!!"
