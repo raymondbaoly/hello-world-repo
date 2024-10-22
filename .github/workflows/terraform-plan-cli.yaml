@@ -31,4 +31,5 @@ jobs:
       - name: Set output for environment variables
         id: output_env
         run: |
-          echo "WORKING_DIR=${{ inputs.WORKING_DIR }}" >> $GITHUB_OUTPUT
+          echo "WORKING_DIR=${{ inputs.WORKING_DIR }}"
+          echo "test!!!!"
